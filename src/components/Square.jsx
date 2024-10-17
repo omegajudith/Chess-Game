@@ -1,14 +1,20 @@
 
 import PropTypes from 'prop-types';
-import Piece from './Piece';
+import '../styles/ChessBoard.css';  // Corrected path to ChessBoard.css or styles.css
 
-const Square = ({ piece, onClick, isValidMove }) => {
-  return (
-    <div className={`square ${isValidMove ? 'highlight' : ''}`} onClick={onClick}>
-      <Piece piece={piece} />
-    </div>
-  );
+const unicodePieces = {
+  'K': '♔', 'Q': '♕', 'R': '♖', 'B': '♗', 'N': '♘', 'P': '♙', // White pieces
+  'k': '♚', 'q': '♛', 'r': '♜', 'b': '♝', 'n': '♞', 'p': '♟', // Black pieces
 };
+
+const Square = ({ piece, onClick, isValidMove }) => (
+  <div
+    className={`square ${isValidMove ? 'highlight' : ''}`}
+    onClick={onClick}
+  >
+    {piece !== ' ' ? unicodePieces[piece] : ''}
+  </div>
+);
 
 Square.propTypes = {
   piece: PropTypes.string.isRequired,
@@ -17,5 +23,3 @@ Square.propTypes = {
 };
 
 export default Square;
-
-

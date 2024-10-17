@@ -28,7 +28,7 @@ const Signup = ({ onSignup, onSwitch }) => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit" className="auth-button">Sign Up</button>
       </form>
       <p>
         Already have an account?{' '}

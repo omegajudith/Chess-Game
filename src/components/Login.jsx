@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Login = ({ onLogin, onSwitch }) => {
@@ -7,7 +7,7 @@ const Login = ({ onLogin, onSwitch }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onLogin(username, password);
+    onLogin(username, password); // Call the login handler from parent
   };
 
   return (
@@ -28,7 +28,7 @@ const Login = ({ onLogin, onSwitch }) => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Log In</button>
+        <button type="submit" className="auth-button">Log In</button>
       </form>
       <p>
         Don’t have an account?{' '}

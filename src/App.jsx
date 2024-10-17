@@ -1,56 +1,43 @@
-import { useState } from 'react';
-import Board from './components/Board';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import './styles/ChessBoard.css';
+import { useState } from "react";
+import Login from "./components/Login";     // Correct path to Login.jsx
+import Signup from "./components/Signup";   // Correct path to Signup.jsx
+import Board from "./components/Board";     // Correct path to Board.jsx
+import './index.css';                       // Assuming your global styles are in index.css
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [isSignup, setIsSignup] = useState(true);
-  const [username, setUsername] = useState('');
-  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState(null);
+  const [isSigningUp, setIsSigningUp] = useState(false);
 
-  const handleSignup = (username, password) => {
-    if (users.find(user => user.username === username)) {
-      alert('Username already exists. Please choose another one.');
+  const handleLogin = (username, password) => {
+    if (username === 'user' && password === 'password') {
+      setUser({ username });
     } else {
-      setUsers([...users, { username, password }]);
-      setIsSignup(false); // Move to login after successful signup
-      alert('Signup successful! You can now log in.');
+      alert('Invalid credentials');
     }
   };
 
-  const handleLogin = (username, password) => {
-    const user = users.find(user => user.username === username && user.password === password);
-    if (user) {
-      setUsername(username);
-      setLoggedIn(true);
+  const handleSignup = (username, password) => {
+    if (username && password) {
+      setUser({ username });
     } else {
-      alert('Invalid username or password. Please try again.');
+      alert('Please fill in all fields');
     }
   };
 
   const handleLogout = () => {
-    setLoggedIn(false);
-    setUsername('');
+    setUser(null);
   };
 
   return (
     <div className="app-container">
-      {loggedIn ? (
-        <>
-          <h1>Welcome, {username}! Enjoy the Chess Game!</h1>
-          <Board />
-          <button onClick={handleLogout}>Logout</button>
-        </>
+      {!user ? (
+        isSigningUp ? (
+          <Signup onSignup={handleSignup} onSwitch={() => setIsSigningUp(false)} />
+        ) : (
+          <Login onLogin={handleLogin} onSwitch={() => setIsSigningUp(true)} />
+        )
       ) : (
-        <>
-          {isSignup ? (
-            <Signup onSignup={handleSignup} onSwitch={() => setIsSignup(false)} />
-          ) : (
-            <Login onLogin={handleLogin} onSwitch={() => setIsSignup(true)} />
-          )}
-        </>
+        <Board user={user} onSignOut={handleLogout} />
       )}
     </div>
   );

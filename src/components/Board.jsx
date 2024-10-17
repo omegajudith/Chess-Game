@@ -1,9 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
-import Square from "./Square";
-import moveSound from "./woosh-.mp3";
-import captureSound from "./piece-capture.mp3";
+import { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types'; // Import PropTypes
+import Square from './Square';
+import '../styles/ChessBoard.css';  // Correct path to your CSS
 
-// Initial board setup
 const initialBoardSetup = [
   ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
   ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
@@ -15,20 +14,17 @@ const initialBoardSetup = [
   ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
 ];
 
-const Board = () => {
+const Board = ({ user, onSignOut }) => {
   const [board, setBoard] = useState(initialBoardSetup);
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [validMoves, setValidMoves] = useState([]);
-  const [isPlayerTurn, setIsPlayerTurn] = useState(true); // White's turn by default
-  const [moveHistory, setMoveHistory] = useState([]); // To track all moves
+  const [isPlayerTurn, setIsPlayerTurn] = useState(true); 
 
-  // Function to play sound effects
   const playSound = (type) => {
-    const sound = new Audio(type === 'capture' ? captureSound : moveSound);
+    const sound = new Audio(type === 'capture' ? '/assets/piece-capture.mp3' : '/assets/woosh.mp3');
     sound.play();
   };
 
-  // Handle Computer's Move (for now, it just moves pawns)
   const handleComputerMove = useCallback(() => {
     for (let row = 0; row < 8; row++) {
       for (let col = 0; col < 8; col++) {
@@ -38,20 +34,15 @@ const Board = () => {
           newBoard[row + 1][col] = 'p';
           playSound('move');
           setBoard(newBoard);
-          setMoveHistory((prevHistory) => [
-            ...prevHistory,
-            `Black Pawn from (${row},${col}) to (${row + 1},${col})`,
-          ]);
-          setIsPlayerTurn(true); // Back to White's turn
+          setIsPlayerTurn(true); 
           return;
         }
       }
     }
   }, [board]);
 
-  // Handle the player's move
   const handleSquareClick = (row, col) => {
-    if (!isPlayerTurn) return; // Player can only move during their turn
+    if (!isPlayerTurn) return;
 
     const piece = board[row][col];
     if (selectedPiece) {
@@ -67,17 +58,11 @@ const Board = () => {
         newBoard[row][col] = selectedPiece.piece;
         setBoard(newBoard);
 
-        // Update move history
-        setMoveHistory((prevHistory) => [
-          ...prevHistory,
-          `White ${selectedPiece.piece} from (${selectedPiece.row},${selectedPiece.col}) to (${row},${col})`,
-        ]);
-
         setSelectedPiece(null);
         setValidMoves([]);
-        setIsPlayerTurn(false); // Switch to Black's turn
+        setIsPlayerTurn(false); 
       } else {
-        alert("Invalid move.");
+        alert('Invalid move.');
         setSelectedPiece(null);
         setValidMoves([]);
       }
@@ -87,38 +72,14 @@ const Board = () => {
     }
   };
 
-  // Get valid moves for a selected piece
   const getValidMoves = (piece, row, col) => {
     const moves = [];
-    if (piece === 'P') {
-      // White Pawn moves
-      if (row > 0 && board[row - 1][col] === ' ') {
-        moves.push({ row: row - 1, col });
-      }
-      if (row === 6 && board[row - 1][col] === ' ' && board[row - 2][col] === ' ') {
-        moves.push({ row: row - 2, col });
-      }
+    if (piece === 'P' && row > 0 && board[row - 1][col] === ' ') {
+      moves.push({ row: row - 1, col });
     }
     return moves;
   };
 
-  // Render the chessboard
-  const renderBoard = () => {
-    return board.map((row, rowIndex) => (
-      <div key={rowIndex} className="row">
-        {row.map((piece, colIndex) => (
-          <Square
-            key={colIndex}
-            piece={piece}
-            isValidMove={validMoves.some(move => move.row === rowIndex && move.col === colIndex)}
-            onClick={() => handleSquareClick(rowIndex, colIndex)}
-          />
-        ))}
-      </div>
-    ));
-  };
-
-  // Use effect to trigger computer's move after player's turn
   useEffect(() => {
     if (!isPlayerTurn) {
       handleComputerMove();
@@ -126,30 +87,42 @@ const Board = () => {
   }, [isPlayerTurn, handleComputerMove]);
 
   return (
-    <div className="chess-container">
-      {/* Move History Display */}
-      <div className="move-history">
-        <h3>Move History</h3>
-        <ul>
-          {moveHistory.map((move, index) => (
-            <li key={index}>{move}</li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Turn Indicator */}
-      <div className="turn-indicator">
-        <h2>{isPlayerTurn ? "White's Turn" : "Black's Turn"}</h2>
-      </div>
-
-      {/* Chess Board */}
-      <div className="chess-card">
-        <div className="chess-board">
-          {renderBoard()}
+    <div className="app-container">
+      <div className="chess-section">
+        {/* Welcome Message */}
+        <div className="welcome-message">Welcome, {user.username}!</div>
+        
+        {/* Chessboard */}
+        <div className="chess-card">
+          <div className="chess-board">
+            {board.map((row, rowIndex) => (
+              <div key={rowIndex} className="row">
+                {row.map((piece, colIndex) => (
+                  <Square
+                    key={colIndex}
+                    piece={piece}
+                    isValidMove={validMoves.some(move => move.row === rowIndex && move.col === colIndex)}
+                    onClick={() => handleSquareClick(rowIndex, colIndex)}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
+
+        {/* Sign Out Button */}
+        <button className="sign-out" onClick={onSignOut}>Sign Out</button>
       </div>
     </div>
   );
+};
+
+// Adding PropTypes for validation
+Board.propTypes = {
+  user: PropTypes.shape({
+    username: PropTypes.string.isRequired,  // Ensure user object has a required username string
+  }).isRequired,
+  onSignOut: PropTypes.func.isRequired,  // Ensure onSignOut is a required function
 };
 
 export default Board;

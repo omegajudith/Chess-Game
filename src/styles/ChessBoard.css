@@ -1,44 +1,145 @@
+/* Root color variables */
 :root {
-    --board-light: #f9e4b7; /* Cream */
-    --board-dark: #a0522d;  /* Sienna Brown */
+    --board-light: #f5deb3; /* Cream */
+    --board-dark: #a0522d;  /* Brown */
     --highlight: #ff8c00;   /* Dark Orange */
     --highlight-move: rgba(255, 140, 0, 0.5); /* Semi-transparent dark orange */
-    --wood-light: #deb887; /* Light Wood (BurlyWood) */
-    --wood-dark: #8b4513; /* SaddleBrown */
+    --wood-light: #deb887;  /* Light Wood */
+    --wood-dark: #8b4513;   /* SaddleBrown */
     --shadow-color: rgba(139, 69, 19, 0.5); /* Soft brown shadow */
-    --text-color: #8b4513; /* Brown text for consistency */
+    --text-color: #8b4513;  /* Brown text */
+    --bg-gradient: linear-gradient(135deg, #f2e1c6, #d2a679); /* Background gradient */
 }
 
-/* Chess Board Styles */
-.chess-card {
+/* Fullscreen layout */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    background: var(--bg-gradient);
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    width: 520px;
-    height: 520px;
-    margin: auto;
-    padding: 20px;
-    background-color: var(--wood-light);
-    box-shadow: 0px 12px 25px var(--shadow-color); /* Add soft shadow */
-    border-radius: 12px;
-    overflow: hidden;
-    transform: perspective(1000px) rotateX(5deg); /* Add 3D tilt */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    align-items: center;
+    overflow: hidden;  /* No scrolling */
 }
 
-.chess-card:hover {
-    transform: perspective(1000px) rotateX(0deg); /* Smooth hover effect */
-    box-shadow: 0px 20px 30px var(--shadow-color); /* Stronger shadow */
-}
-
-.chess-board {
+/* General App Container */
+.app-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
+    height: 100vh;
+}
+
+/* Auth Form Container (Login/Signup) */
+.auth-container {
+    width: 360px;
+    padding: 40px;
+    background-color: var(--wood-light);
+    border-radius: 12px;
+    box-shadow: 0px 10px 30px var(--shadow-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+}
+
+.auth-container:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0px 15px 40px var(--shadow-color);
+}
+
+/* Auth Form Titles */
+.auth-container h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+/* Input Fields */
+input {
+    width: 85%;
+    margin: 10px 0;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--text-color);
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--highlight);
+    box-shadow: 0px 0px 10px rgba(255, 140, 0, 0.5);
+}
+
+/* Auth Buttons */
+.auth-button, .switch-btn, .sign-out {
+    padding: 12px 20px;
+    background-color: var(--highlight);
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
     margin-top: 20px;
+    box-shadow: 0px 4px 10px var(--shadow-color);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.auth-button:hover, .switch-btn:hover, .sign-out:hover {
+    background-color: #ff7f50;
+    transform: translateY(-3px);
+}
+
+/* Switch Button Styling */
+.switch-btn {
+    background-color: transparent;
+    border: 1px solid var(--highlight);
+    color: var(--highlight);
+    margin-top: 10px;
+}
+
+.switch-btn:hover {
+    background-color: var(--highlight);
+    color: white;
+}
+
+/* Sign-Out Button Styling */
+.sign-out {
+    margin-top: 30px;
+}
+
+/* Chessboard Layout */
+.chess-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Chessboard Card with 3D effect */
+.chess-card {
+    width: 400px;
+    height: 400px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0px 15px 40px var(--shadow-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.chess-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0px 20px 50px var(--shadow-color);
+}
+
+/* Chessboard */
+.chess-board {
+    display: flex;
+    flex-direction: column;
 }
 
 .row {
@@ -46,168 +147,35 @@
 }
 
 .square {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
+    background-color: var(--board-light);
+    border: 1px solid var(--wood-dark);
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--board-light);
-    border: 1px solid var(--wood-dark);
-    box-shadow: 0px 4px 8px var(--shadow-color); /* Shadow for 3D effect */
-    transition: transform 0.2s ease, background-color 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .square:nth-child(even) {
-    background-color: var(--board-dark); /* Darker squares */
-}
-
-.square.highlight {
-    background-color: var(--highlight-move); /* Highlight valid move squares */
+    background-color: var(--board-dark);
 }
 
 .square:hover {
-    transform: scale(1.1); /* Slight zoom on hover */
+    transform: scale(1.05);
+    background-color: var(--highlight-move);
 }
 
 /* Chess Pieces */
 .piece {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: var(--text-color);
-    transition: transform 0.3s ease; /* Smooth animation for piece movement */
-}
-
-.piece:hover {
-    transform: scale(1.2); /* Slight zoom on hover */
-}
-
-/* Move History */
-.move-history {
-    width: 220px;
-    padding: 15px;
-    background-color: var(--wood-light); /* Light wood background */
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px var(--shadow-color); /* Add shadow */
-    max-height: 400px;
-    overflow-y: auto;
-    margin-right: 20px;
-}
-
-.move-history h3 {
-    color: var(--text-color);
-    text-align: center;
-    font-size: 1.2rem;
-}
-
-.move-history ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.move-history li {
-    padding: 5px 0;
-    border-bottom: 1px solid var(--wood-dark);
-    transform: translateX(-100%);
-    animation: slideIn 0.5s forwards;
-}
-
-/* Sliding Animation */
-@keyframes slideIn {
-    from {
-        transform: translateX(-100%);
-    }
-    to {
-        transform: translateX(0);
-    }
-}
-
-/* Turn Indicator */
-.turn-indicator {
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 2rem;
     color: var(--text-color);
 }
 
 /* Welcome Message */
 .welcome-message {
-    text-align: center;
-    font-size: 2rem;
-    color: var(--highlight);
-    margin-top: 20px;
-}
-
-/* Auth (Login/Signup) Forms */
-.auth-container {
-    width: 350px;
-    margin: 100px auto;
-    text-align: center;
-    background-color: var(--wood-light);
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 12px var(--shadow-color); /* Shadow for 3D effect */
-    transition: transform 0.3s ease;
-}
-
-.auth-container:hover {
-    transform: translateY(-5px); /* Lift on hover */
-}
-
-.auth-container h2 {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     color: var(--text-color);
-}
-
-input {
-    width: 85%;
-    margin: 10px 0;
-    padding: 12px;
-    border: 1px solid var(--wood-dark);
-    border-radius: 6px;
-    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-button {
-    padding: 12px 25px;
-    background-color: var(--highlight);
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 6px;
-    margin-top: 10px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: 0px 4px 10px var(--shadow-color);
-}
-
-button:hover {
-    background-color: #c43603;
-    transform: translateY(-2px); /* Lift on hover */
-}
-
-.switch-btn {
-    background: none;
-    border: none;
-    color: var(--highlight);
-    font-size: 14px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.switch-btn:hover {
-    color: #ff7f50;
-    text-decoration: underline;
-}
-
-/* General App Container */
-.app-container {
+    margin-bottom: 10px;
     text-align: center;
-    font-family: 'Arial', sans-serif;
-    margin-top: 20px;
-}
-
-h1 {
-    color: var(--highlight);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
