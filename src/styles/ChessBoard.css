@@ -1,0 +1,213 @@
+:root {
+    --board-light: #f9e4b7; /* Cream */
+    --board-dark: #a0522d;  /* Sienna Brown */
+    --highlight: #ff8c00;   /* Dark Orange */
+    --highlight-move: rgba(255, 140, 0, 0.5); /* Semi-transparent dark orange */
+    --wood-light: #deb887; /* Light Wood (BurlyWood) */
+    --wood-dark: #8b4513; /* SaddleBrown */
+    --shadow-color: rgba(139, 69, 19, 0.5); /* Soft brown shadow */
+    --text-color: #8b4513; /* Brown text for consistency */
+}
+
+/* Chess Board Styles */
+.chess-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 520px;
+    height: 520px;
+    margin: auto;
+    padding: 20px;
+    background-color: var(--wood-light);
+    box-shadow: 0px 12px 25px var(--shadow-color); /* Add soft shadow */
+    border-radius: 12px;
+    overflow: hidden;
+    transform: perspective(1000px) rotateX(5deg); /* Add 3D tilt */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chess-card:hover {
+    transform: perspective(1000px) rotateX(0deg); /* Smooth hover effect */
+    box-shadow: 0px 20px 30px var(--shadow-color); /* Stronger shadow */
+}
+
+.chess-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.row {
+    display: flex;
+}
+
+.square {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--board-light);
+    border: 1px solid var(--wood-dark);
+    box-shadow: 0px 4px 8px var(--shadow-color); /* Shadow for 3D effect */
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.square:nth-child(even) {
+    background-color: var(--board-dark); /* Darker squares */
+}
+
+.square.highlight {
+    background-color: var(--highlight-move); /* Highlight valid move squares */
+}
+
+.square:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+}
+
+/* Chess Pieces */
+.piece {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--text-color);
+    transition: transform 0.3s ease; /* Smooth animation for piece movement */
+}
+
+.piece:hover {
+    transform: scale(1.2); /* Slight zoom on hover */
+}
+
+/* Move History */
+.move-history {
+    width: 220px;
+    padding: 15px;
+    background-color: var(--wood-light); /* Light wood background */
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px var(--shadow-color); /* Add shadow */
+    max-height: 400px;
+    overflow-y: auto;
+    margin-right: 20px;
+}
+
+.move-history h3 {
+    color: var(--text-color);
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.move-history ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.move-history li {
+    padding: 5px 0;
+    border-bottom: 1px solid var(--wood-dark);
+    transform: translateX(-100%);
+    animation: slideIn 0.5s forwards;
+}
+
+/* Sliding Animation */
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* Turn Indicator */
+.turn-indicator {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+/* Welcome Message */
+.welcome-message {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--highlight);
+    margin-top: 20px;
+}
+
+/* Auth (Login/Signup) Forms */
+.auth-container {
+    width: 350px;
+    margin: 100px auto;
+    text-align: center;
+    background-color: var(--wood-light);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px var(--shadow-color); /* Shadow for 3D effect */
+    transition: transform 0.3s ease;
+}
+
+.auth-container:hover {
+    transform: translateY(-5px); /* Lift on hover */
+}
+
+.auth-container h2 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+
+input {
+    width: 85%;
+    margin: 10px 0;
+    padding: 12px;
+    border: 1px solid var(--wood-dark);
+    border-radius: 6px;
+    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    padding: 12px 25px;
+    background-color: var(--highlight);
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0px 4px 10px var(--shadow-color);
+}
+
+button:hover {
+    background-color: #c43603;
+    transform: translateY(-2px); /* Lift on hover */
+}
+
+.switch-btn {
+    background: none;
+    border: none;
+    color: var(--highlight);
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.switch-btn:hover {
+    color: #ff7f50;
+    text-decoration: underline;
+}
+
+/* General App Container */
+.app-container {
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    margin-top: 20px;
+}
+
+h1 {
+    color: var(--highlight);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
